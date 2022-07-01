@@ -1,0 +1,125 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reader.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: llapage <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/04 14:22:42 by llapage           #+#    #+#             */
+/*   Updated: 2018/10/05 17:06:41 by llapage          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+#include "../libft/libft.h"
+#include "includes/fillit.h"
+
+int		check_link(char *str)
+{
+	int	link;
+	int	i;
+
+	i = 0;
+	link = 0;
+	while (i < 20)
+	{
+		while (str[i] != '#')
+			i++;
+		if (str[i + 1] < 20 && str[i + 1] == '#')
+			link++;
+		if (str[i - 1] >= 0 && str[i - 1] == '#')
+			link++;
+		if (str[i + 5] < 20 && str[i + 5] == '#')
+			link++;
+		if (str[i - 5] >= 0 && str[i - 5] == '#')
+			link++;
+		i++;
+	}
+	if (link >= 6)
+		return (0);
+	return (1);
+}
+int		check_if_valid(char *str, int total_pieces)
+{
+	int height;
+	int i;
+
+	height = 0;
+	i = 0;
+	while (i < 20)
+	{
+		if (i % 5 < 4)
+		{
+			if (str[i] != '#' || str[i] != '.')
+				return (1);
+			if (str[i] == '#' && ++height > 4)
+				return (2);
+		}
+		else if (str[i] != '\n')
+			return (3);
+		i++;
+		if (total_pieces == 21 && str[20] != '\n')
+			return (4);
+		if (check_link(str) != 0)
+			return (5);
+	}
+	return (0);
+}
+void	size_to_copy(char *str, t_coord *first, t_coord *last)
+{
+	int i;
+
+	i = 0;
+	while (i < 20)
+	{
+		if (str[i] == '#')
+		{
+			if (i / 5 < first->y)
+				first->y = i / 5;
+			if (i / 5 > last->y)
+				last->y = i / 5;
+			if (i % 5 < first->x)
+				first->x = i % 5;
+			if (i % 5 > last->x)
+				last->x = i % 5;
+		}
+		i++;
+	}
+}
+t_tetra	*block_in_struct(char *str, char letter)
+{
+	t_coord	*first;
+	t_coord	*last;
+	char	**table;
+	t_tetra	*tetra;
+
+	first = new_coord(3, 3);
+	last = new_coord(0, 0);
+	size_to_copy(str, first, last);
+	table = ft_memalloc(sizeof(char *) * max->y - min->y + 1)
+
+	return (tetra);
+}
+
+t_list	*read_tetra(int fd)
+{
+	char	*buffer;
+	int		total_pieces;
+	t_list	*list;
+	t_tetra	*tetra;
+	char	letter;
+
+	letter = 'A';
+	total_pieces = 0;
+	buffer = ft_strnew(21);
+	while ((total_pieces = read(fd, &buffer, 21)) >= 20)
+	{
+		if (check_if_valid(buffer, total_pieces) != 0
+				|| (tetra = block_in_struct(buffer, letter)) == NULL)
+		{
+			ft_memdel((void**)(buffer));
+
+		}
+	}
+	return (list);
+}
